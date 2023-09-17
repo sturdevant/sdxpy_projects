@@ -37,4 +37,3 @@ for ex in examples:
     p = call(ex, "perimeter")
     a = call(ex, "area")
     print(f"{n} {p:.2f} {a:.2f}")
-    
