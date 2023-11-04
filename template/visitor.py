@@ -14,4 +14,4 @@ class Visitor:
         raise NotImplementedError("open")
 
     def close(self, node):
-        raise NotImplementedError("open")
+        raise NotImplementedError("close")
