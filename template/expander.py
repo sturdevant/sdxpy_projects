@@ -3,12 +3,14 @@ from bs4 import NavigableString
 from env import Env
 from visitor import Visitor
 
-# TODO: add z-if and z-loop
+# TODO: add z-loop
+import z_if
 import z_num
 import z_var
 
 HANDLERS = {
-    #TODO: add z-if and z-loop
+    #TODO: add z-loop
+    "z-if": z_if,
     "z-num": z_num,
     "z-var": z_var
 }
