@@ -1,9 +1,9 @@
 def open(expander, node):
-    check = expander.env.find(node.attrs["z-if"])
-    if check:
+    node.check = expander.env.find(node.attrs["z-if"])
+    if node.check:
         expander.showTag(node, False)
-    return check
+    return node.check
 
 def close(expander, node):
-    if expander.env.find(node.attrs["z-if"]):
+    if node.check:
         expander.showTag(node, True)
