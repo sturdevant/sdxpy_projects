@@ -1,3 +1,7 @@
+from pathlib import Path
+
+from interface import Database
+
 class FileBacked(Database):
     def __init__(self, record_cls, filename):
         super().__init__(record_cls)
