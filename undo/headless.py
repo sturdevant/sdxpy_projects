@@ -19,7 +19,7 @@ class HeadlessScreen:
 
     def addstr(self, row, col, text):
         assert 0 <= row < self._size[ROW]
-        assert COL == 0
+        assert col == 0
         assert len(text) <= self._size[COL]
         self._display[row] = text + self._display[row][len(text):]
 
