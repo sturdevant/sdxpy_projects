@@ -8,16 +8,16 @@ class InsertDeleteBuffer(Buffer):
     def insert(self, pos, char):
         assert 0 <= pos[ROW] <= self.nrow()
         assert 0 <= pos[COL] <= self.ncol(pos[ROW])
-        line = self._line[pos[ROW]]
+        line = self._lines[pos[ROW]]
         line = line[:pos[COL]] + char + line[pos[COL]:]
-        self._line[pos[ROW]] = line
+        self._lines[pos[ROW]] = line
 
     def delete(self, pos):
         assert 0 <= pos[ROW] <= self.nrow()
         assert 0 <= pos[COL] <= self.ncol(pos[ROW])
-        line = self._line[pos[ROW]]
+        line = self._lines[pos[ROW]]
         line = line[:pos[COL]] + line[pos[COL] + 1:]
-        self._line[pos[ROW]] = line
+        self._lines[pos[ROW]] = line
 
 class InsertDeleteApp(HeadlessApp):
     INSERTABLE = set(string.ascii_letters + string.digits)
