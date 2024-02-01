@@ -14,6 +14,9 @@ class Undo(Action):
         return f"Undo({self._app._history[-1]})"
 
 class UndoableApp(ActionApp):
+    def _do_UNDO(self, key):
+        return Undo(self)
+
     def _interact(self):
         family, key = self._get_key()
         name = f"_do_{family}" if family else f"_do_{key}"
