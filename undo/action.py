@@ -12,6 +12,9 @@ class Action:
     def undo(self):
         raise NotImplementedError(f"{self.__class__.__name__}: undo")
 
+    def save(self):
+        return True
+
 class Insert(Action):
     def __init__(self, app, pos, char):
         super().__init__(app)
@@ -65,7 +68,7 @@ class ActionApp(InsertDeleteApp):
 
     def _get_key(self):
         key = self._screen.getkey()
-        if key in INSERTABLE:
+        if key in self.INSERTABLE:
             return "INSERT", key
         else:
             return None, key
@@ -83,10 +86,10 @@ class ActionApp(InsertDeleteApp):
     def _add_log(self, key):
         self._log.append((key, self._cursor.pos(), self._screen.display()))
 
-    def _do_delete(self, key):
+    def _do_DELETE(self, key):
         return Delete(self, self._cursor.pos())
 
-    def _do_insert(self, key):
+    def _do_INSERT(self, key):
         return Insert(self, self._cursor.pos(), key)
 
     def _do_KEY_UP(self, key):
