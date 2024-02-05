@@ -17,3 +17,13 @@ class VirtualMachine:
         ]
         self.ip = 0
         self.reg = [0] * NUM_REG
+
+    def fetch(self):
+        instruction = self.ram[self.ip]
+        self.ip += 1
+        op = instruction & OP_MASK
+        instruction >>= OP_SHIFT
+        arg0 = instruction & OP_MASK
+        instruction >>= OP_SHIFT
+        arg1 = instruction & OP_MASK
+        return [op, arg0, arg1]
