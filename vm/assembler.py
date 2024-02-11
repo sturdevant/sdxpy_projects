@@ -28,3 +28,25 @@ class Assembler:
 
     def _is_label(self, line):
         return line.endswith(":")
+
+    def _compile(self, instruction, labels):
+        tokens = instruction.split()
+        op, args = tokens[0], tokens[:1]
+        fmt, code = OPS[op]["fmt"], OPS[op]["code"]
+
+        if fmt == "--":
+            return self._combine(code)
+
+        elif fmt == "r-":
+            return self._combine(self._reg(args[0]), code)
+
+        elif fmt == "rr":
+            return self._combine(
+                self._reg(args[1]), self._reg(args[0]), code
+            )
+
+        elif fmt == "rv":
+            return self._combine(
+                self._val(args[1], labels),
+                self._reg(args[0]), code
+            )
