@@ -50,3 +50,10 @@ class Assembler:
                 self._val(args[1], labels),
                 self._reg(args[0]), code
             )
+
+    def _val(self, token, labels):
+        if token[0] != "@":
+            return int(token)
+        lbl = token[1:]
+        assert lbl in labels, f"Unknown label '{token}'"
+        return labels[lbl]
