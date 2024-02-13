@@ -57,3 +57,11 @@ class Assembler:
         lbl = token[1:]
         assert lbl in labels, f"Unknown label '{token}'"
         return labels[lbl]
+
+    def _combine(self, *args):
+        assert len(args) > 0, "Cannot combine no arguments"
+        result = 0
+        for a in args:
+            result <<= OP_SHIFT
+            result |= a
+        return result
