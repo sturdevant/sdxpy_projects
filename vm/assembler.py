@@ -31,7 +31,7 @@ class Assembler:
 
     def _compile(self, instruction, labels):
         tokens = instruction.split()
-        op, args = tokens[0], tokens[:1]
+        op, args = tokens[0], tokens[1:]
         fmt, code = OPS[op]["fmt"], OPS[op]["code"]
 
         if fmt == "--":
@@ -65,3 +65,34 @@ class Assembler:
             result <<= OP_SHIFT
             result |= a
         return result
+
+    def _to_text(self, program):
+        return [f"{op:06x}" for op in program]
+
+    def _get_lines(self, lines):
+        lines = [ln.strip() for ln in lines]
+        lines = [ln for ln in lines if len(ln) > 0]
+        lines = [ln for ln in lines if not self._is_comment(ln)]
+        return lines
+
+    def _is_comment(self, line):
+        return line.startswith("#")
+
+    def _reg(self, token):
+        assert token[0] == "R", f"Register '{token}' does not start with 'R'"
+        r = int(token[1:])
+        assert 0 <= r <= NUM_REG, f"Illegal register {token}"
+        return r
+
+def main(assembler_cls):
+    assert len(sys.argv) == 3, f"Usage: {sys.argv[0]} input|- output|-"
+    reader = open(sys.argv[1], "r") if (sys.argv[1] != "-") else sys.stdin
+    writer = open(sys.argv[2], "w") if (sys.argv[2] != "-") else sys.stdout
+    lines = reader.readlines()
+    assembler = assembler_cls()
+    program = assembler.assemble(lines)
+    for instruction in program:
+        print(instruction, file=writer)
+
+if __name__ == "__main__":
+    main(Assembler)
