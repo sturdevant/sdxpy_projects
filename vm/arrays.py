@@ -17,3 +17,10 @@ class DataAllocator(Assembler):
         compiled = [self._compile(instr, labels) for instr in instructions]
         program = self._to_text(compiled)
         return program
+    
+    def _split(self, lines):
+        try:
+            split = lines.index(self.DIVIDER)
+            return lines[0:split], lines[split + 1:]
+        except ValueError:
+            return lines, []
