@@ -36,3 +36,6 @@ class DataAllocator(Assembler):
                 f"Allocation '{lbl}' requires too much memory"
             label[lbl] = base_of_data
             base_of_data += num_words
+
+if __name__ == "__main__":
+    main(DataAllocator)
