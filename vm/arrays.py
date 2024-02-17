@@ -9,7 +9,7 @@ class DataAllocator(Assembler):
         to_compile, to_allocate = self._split(lines)
 
         labels = self._find_labels(lines)
-        instructions = [ln for ln in lines if not self._is_label(ln)]
+        instructions = [ln for ln in to_compile if not self._is_label(ln)]
 
         base_of_data = len(instructions)
         self._add_allocations(base_of_data, labels, to_allocate)
@@ -34,7 +34,7 @@ class DataAllocator(Assembler):
             num_words = int(num_words_text)
             assert (base_of_data + num_words) < RAM_LEN, \
                 f"Allocation '{lbl}' requires too much memory"
-            label[lbl] = base_of_data
+            labels[lbl] = base_of_data
             base_of_data += num_words
 
 if __name__ == "__main__":
