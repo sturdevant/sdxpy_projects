@@ -22,3 +22,10 @@ class VirtualMachineBase:
         """Set up memory."""
         self.writer = writer
         self.initialize([])
+
+    def initialize(self, program):
+        """Copy the program into memory and clear everything else."""
+        assert len(program) <= RAM_LEN, f"Program is too long for memory"
+        self.ram = [program[i] if (i < len(program)) else 0 for i in range(RAM_LEN)]
+        self.ip = 0
+        self.reg = [0] * NUM_REG
