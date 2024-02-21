@@ -29,3 +29,10 @@ class VirtualMachineBase:
         self.ram = [program[i] if (i < len(program)) else 0 for i in range(RAM_LEN)]
         self.ip = 0
         self.reg = [0] * NUM_REG
+
+    def run(self):
+        """Execute instructions one by one until the program ends."""
+        self.state = VMState.RUNNING
+        while self.state != VMState.Finished:
+            addr, op, arg0, arg1, = self.fetch()
+            self.execute(op, arg0, arg1)
