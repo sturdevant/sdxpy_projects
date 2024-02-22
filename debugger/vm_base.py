@@ -36,3 +36,13 @@ class VirtualMachineBase:
         while self.state != VMState.Finished:
             addr, op, arg0, arg1, = self.fetch()
             self.execute(op, arg0, arg1)
+
+    def fetch(self):
+        """Get the next instruction."""
+        assert (
+            0 <= self.ip <= len(self.ram)
+        ), f"Program counter {self.ip:06x} out of range 0..{len(self.ram):06x}"
+        old_ip = self.ip
+        instruction = self.ram[self.ip]
+        self.ip += 1
+        return (old_ip, *self.decode(instruction))
