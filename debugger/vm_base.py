@@ -55,3 +55,62 @@ class VirtualMachineBase:
         instruction >>= OP_SHIFT
         arg1 = instruction & OP_MASK
         return op, arg0, arg1
+
+    def execute(self, op, arg0, arg1):
+        """Execute a single instruction."""
+        if op == OPS["hlt"]["code"]:
+            self.state = VMState.FINISHED
+
+        elif op == OPS["ldc"]["code"]:
+            self.assert_is_register(arg0)
+            self.reg[arg0] = arg1
+
+        elif op == OPS["ldr"]["code"]:
+            self.assert_is_register(arg0)
+            self.assert_is_register(arg1)
+            self.reg[arg0] = self.ram[self.reg[arg1]]
+
+        elif op == OPS["cpy"]["code"]:
+            self.assert_is_register(arg0)
+            self.assert_is_register(arg1)
+            self.reg[arg0] = self.reg[arg1]
+
+        elif op == OPS["str"]["code"]:
+            self.assert_is_register(arg0)
+            self.assert_is_register(arg1)
+            self.assert_is_address(self.reg[arg1])
+            self.ram[self.reg[arg1]] = self.reg[arg0]
+
+        elif op == OPS["add"]["code"]:
+            self.assert_is_register(arg0)
+            self.assert_is_register(arg1)
+            self.reg[arg0] += self.reg[arg1]
+
+        elif op == OPS["sub"]["code"]:
+            self.assert_is_register(arg0)
+            self.assert_is_register(arg1)
+            self.reg[arg0] -= self.reg[arg1]
+
+        elif op == OPS["beq"]["code"]:
+            self.assert_is_register(arg0)
+            self.assert_is_address(arg1)
+            if self.reg[arg0] == 0:
+                self.ip = arg1
+
+        elif op == OPS["bne"]["code"]:
+            self.assert_is_register(arg0)
+            self.assert_is_address(arg1)
+            if self.reg[arg0] != 0:
+                self.ip = arg1
+
+        elif op == OPS["prr"]["code"]:
+            self.assert_is_register(arg0)
+            self.write(f"{self.reg[arg0]:06x}")
+
+        elif op == OPS["prm"]["code"]:
+            self.assert_is_register(arg0)
+            self.assert_is_address(self.reg[arg0])
+            self.write(f"{self.ram[self.reg[arg0]]:06x}")
+
+        else:
+            assert False, f"Unknown op {op:06x}"
