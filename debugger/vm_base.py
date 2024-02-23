@@ -46,3 +46,12 @@ class VirtualMachineBase:
         instruction = self.ram[self.ip]
         self.ip += 1
         return (old_ip, *self.decode(instruction))
+
+    def decode(self, instruction):
+        """Decode an instruction to get an opcode and its operands."""
+        op = instruction & OP_MASK
+        instruction >>= OP_SHIFT
+        arg0 = instruction & OP_MASK
+        instruction >>= OP_SHIFT
+        arg1 = instruction & OP_MASK
+        return op, arg0, arg1
