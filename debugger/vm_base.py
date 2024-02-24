@@ -114,3 +114,22 @@ class VirtualMachineBase:
 
         else:
             assert False, f"Unknown op {op:06x}"
+
+    def show(self):
+        """Show the IP, registers, and memory."""
+        # Show IP and registers
+        self.write(f"IP{' ' * 6}= {self.ip:06x}")
+        for (i, r) in enumerate(self.reg):
+            self.write(f"R{i:06x} = {r:06x}")
+
+        # How much memory to show
+        top = max(i for (i, m) in enumerate(self.ram) if m != 0)
+
+        # Show memory
+        base = 0
+        while base <= top:
+            output = f"{base:06x}: "
+            for i in range(COLUMNS):
+                output += f"  {self.ram[base + i]:06x}"
+            self.write(output)
+            base += COLUMNS
