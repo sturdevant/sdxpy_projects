@@ -139,3 +139,10 @@ class VirtualMachineBase:
 
     def assert_is_address(self, addr):
         assert 0 <= addr <= len(self.ram), f"Invalid address {addr:06x}"
+
+    def write(self, *args):
+        msg = "".join(args) + "\n"
+        self.writer.write(msg)
+
+if __name__ == "__main__":
+    VirtualMachineBase.main()
