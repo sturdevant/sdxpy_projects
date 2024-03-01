@@ -15,3 +15,8 @@ class VirtualMachineStep(VirtualMachineBase):
         self.ip += 1
         op, arg0, arg1 = self.decode(instruction)
         self.execute(op, arg0, arg1)
+
+    def disassemble(self, addr, instruction):
+        op, arg0, arg1 = self.decode(instruction)
+        assert op in OPS_LOOKUP, f"Unknown op code {op} at {addr}"
+        return f"{OPS_LOOKUP[op]} | {arg0} | {arg1}"
