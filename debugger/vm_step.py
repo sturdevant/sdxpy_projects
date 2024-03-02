@@ -3,6 +3,8 @@ import sys
 from architecture import OPS, VMState
 from vm_base import VirtualMachineBase
 
+OPS_LOOKUP = {value["code"]: key for key, value in OPS.items()}
+
 class VirtualMachineStep(VirtualMachineBase):
     def run(self):
         self.state = VMState.STEPPING
