@@ -17,3 +17,9 @@ class Writer:
 
     def write(self, *args):
         self.seen.extend(args)
+
+def execute(source, reader, writer):
+    program = Assembler().assemble(source.split("\n"), False)
+    vm = VM(reader, writer)
+    vm.initialize(program)
+    vm.run()
