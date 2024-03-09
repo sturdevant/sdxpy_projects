@@ -23,3 +23,12 @@ def execute(source, reader, writer):
     vm = VM(reader, writer)
     vm.initialize(program)
     vm.run()
+
+def test_disassemble():
+    source = """
+    hlt
+    """
+    reader = Reader("d", "q")
+    writer = Writer()
+    execute(source, reader, writer)
+    assert writer.seen == ["hlt | 0 | 0\n"]
