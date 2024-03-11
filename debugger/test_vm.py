@@ -32,3 +32,18 @@ def test_disassemble():
     writer = Writer()
     execute(source, reader, writer)
     assert writer.seen == ["hlt | 0 | 0\n"]
+
+def test_print_two_values():
+    source = """
+    ldc R0 55
+    prr R0
+    ldc R0 65
+    prr R0
+    hlt
+    """
+    reader = Reader("s", "s", "s", "q")
+    writer = Writer()
+    execute(source, reader, writer)
+    assert writer.seen == [
+        "000037\n"
+    ]
