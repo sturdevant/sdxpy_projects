@@ -17,10 +17,10 @@ class VirtualMachineStep(VirtualMachineBase):
                 self.interact(self.ip)
             if self.state == VMState.FINISHED:
                 break
-        instruction = self.ram[self.ip]
-        self.ip += 1
-        op, arg0, arg1 = self.decode(instruction)
-        self.execute(op, arg0, arg1)
+            instruction = self.ram[self.ip]
+            self.ip += 1
+            op, arg0, arg1 = self.decode(instruction)
+            self.execute(op, arg0, arg1)
 
     def interact(self, addr):
         while self.state == VMState.STEPPING:
