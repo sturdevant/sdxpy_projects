@@ -4,6 +4,23 @@ from architecture import VMState
 from vm_step import VirtualMachineStep
 
 class VirtualMachineExtend(VirtualMachineStep):
+    def __init__(self, reader=input, writer=sys.stdout):
+        super().__init__(reader, writer)
+        self.handlers = {
+            "d": self._do_disassemble,
+            "dis": self._do_disassemble,
+            "i": self._do_ip,
+            "ip": self._do_ip,
+            "m": self._do_memory,
+            "memory": self._do_memory,
+            "q": self._do_quit,
+            "quit": self._do_quit,
+            "r": self._do_run,
+            "run": self._do_run,
+            "s": self._do_step,
+            "step": self._do_step,
+        }
+
     def interact(self, addr):
         prompt = "".join(sorted({key[0] for key in self.handlers}))
         interacting = True
@@ -43,3 +60,6 @@ class VirtualMachineExtend(VirtualMachineStep):
     def _do_step(self, addr):
         self.state = VMState.STEPPING
         return False
+
+if __name__ == "__main__":
+    VirtualMachineExtend.main()
