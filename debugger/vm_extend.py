@@ -4,6 +4,22 @@ from architecture import VMState
 from vm_step import VirtualMachineStep
 
 class VirtualMachineExtend(VirtualMachineStep):
+    def interact(self, addr):
+        prompt = "".join(sorted({key[0] for key in self.handlers}))
+        interacting = True
+        while interacting:
+            try:
+                command = self.read(f"{addr:06x} [{prompt}]> ")
+                if not command:
+                    continue
+                elif command not in self.handlers:
+                    self.write(f"Unknown command {command}")
+                else:
+                    interacting = self.handlers[command](self.ip)
+            except EOFError:
+                self.state = VMState.FINISHED
+                interacting = False
+
     def _do_disassemble(self, addr):
         self.write(self.disassemble(addr, self.ram[addr]))
         return True
