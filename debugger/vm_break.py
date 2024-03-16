@@ -20,3 +20,10 @@ class VirtualMachineBreak(VirtualMachineExtend):
         self.breaks[addr] = self.ram[addr]
         self.ram[addr] = OPS["brk"]["code"]
         return True
+
+    def _do_clear_breakpoint(self, addr):
+        if self.ram[addr] != OPS["brk"]["code"]:
+            return True
+        self.ram[addr] = self.breaks[addr]
+        del self.breaks[addr]
+        return True
