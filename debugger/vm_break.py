@@ -14,6 +14,13 @@ class VirtualMachineBreak(VirtualMachineExtend):
             "clear": self._do_clear_breakpoint,
         }
 
+    def show(self):
+        super().show()
+        if self.breaks:
+            self.write("-" * 6)
+            for key, instruction in self.breaks.items():
+                self.write(f"{key:06x}: {self.disassemble(key, instruction)}")
+
     def _do_add_breakpoint(self, addr):
         if self.ram[addr] == OPS["brk"]["code"]:
             return True
