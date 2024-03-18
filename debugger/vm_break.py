@@ -21,6 +21,24 @@ class VirtualMachineBreak(VirtualMachineExtend):
             for key, instruction in self.breaks.items():
                 self.write(f"{key:06x}: {self.disassemble(key, instruction)}")
 
+    def run(self):
+        self.state = VMState.STEPPING
+        while self.state != VMState.FINISHED:
+            instruction = self.ram[self.ip]
+            op, arg0, arg1 = self.decode(instruction)
+
+            if op == OPS["brk"]["code"]:
+                original = self.breaks[self.ip]
+                op, arg0, arg1 = self.decode(original)
+                self.interact(self.ip)
+                self.ip += 1
+                self.execute(op, arg0, arg1)
+            else:
+                if self.state == VMState.STEPPING:
+                    self.interact(self.ip)
+                self.ip += 1
+                self.execute(op, arg0, arg1)
+
     def _do_add_breakpoint(self, addr):
         if self.ram[addr] == OPS["brk"]["code"]:
             return True
@@ -34,3 +52,6 @@ class VirtualMachineBreak(VirtualMachineExtend):
         self.ram[addr] = self.breaks[addr]
         del self.breaks[addr]
         return True
+
+if __name__ == "__main__":
+    VirtualMachineBreak.main()
